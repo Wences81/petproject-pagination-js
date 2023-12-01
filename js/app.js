@@ -24,8 +24,23 @@ async function main() {
         })
 
     }
-    function displayPagination() { }
-    function displayPaginationBtn() { }
+    function displayPagination(arrData, rowPerPage) {
+        const paginationEl = document.querySelector('.pagination');
+        const pagesCount = Math.ceil(arrData / rowPerPage);
+        const ulEl = document.createElement('ul');
+        ulEl.classList.add('pagination__list');
+
+        for (let i = 0; i < pagesCount; i++) {
+            const liEl = displayPaginationBtn(i + 1);
+            ulEl.appendChild(liEl)
+
+        }
+    }
+    function displayPaginationBtn(page) {
+        const liEl = document.createElement('li');
+        liEl.classList.add('pagination__item');
+        liEl.innerText = page
+    }
     
     displayList(postsData, rows, currentPage);
 
