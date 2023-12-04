@@ -11,6 +11,8 @@ async function main() {
 
     function displayList(arrData, rowPerPage, page) {
         const postsEl = document.querySelector('.posts');
+        postsEl.innerHTML = '';
+        page--;
 
         const start = rowPerPage * page;
         const end = start + rowPerPage;
@@ -26,23 +28,40 @@ async function main() {
     }
     function displayPagination(arrData, rowPerPage) {
         const paginationEl = document.querySelector('.pagination');
-        const pagesCount = Math.ceil(arrData / rowPerPage);
+        const pagesCount = Math.ceil(arrData.length / rowPerPage);
         const ulEl = document.createElement('ul');
         ulEl.classList.add('pagination__list');
 
         for (let i = 0; i < pagesCount; i++) {
             const liEl = displayPaginationBtn(i + 1);
             ulEl.appendChild(liEl)
-
         }
+        paginationEl.appendChild(ulEl);
     }
+
     function displayPaginationBtn(page) {
         const liEl = document.createElement('li');
         liEl.classList.add('pagination__item');
-        liEl.innerText = page
+        liEl.innerText = page;
+
+        if (currentPage == page) liEl.classList.add('pagination__item--active')
+
+        liEl.addEventListener('click', () => {
+            currentPage = page
+            displayList(postsData, rows, currentPage)
+
+            let currrentItemLi = document.querySelector('li.pagination__item--active')
+            currrentItemLi.classList.remove('pagination__item--active')
+
+            liEl.classList.add('pagination__item--active')
+        })
+
+
+        return liEl;
     }
     
     displayList(postsData, rows, currentPage);
+    displayPagination(postsData, rows);
 
 }
 
